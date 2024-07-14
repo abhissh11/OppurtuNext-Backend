@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import postRoute from "./routes/post-route.js";
+import cors from "cors";
 
 dotenv.config();
 
@@ -11,6 +12,12 @@ mongoose
   .catch((err) => console.log(err));
 
 const app = express();
+app.use(
+  cors({
+    origin: "http://localhost:3000/",
+  })
+);
+
 app.use(express.json());
 const port = 5000;
 

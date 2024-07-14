@@ -18,9 +18,12 @@ const postSchema = new mongoose.Schema({
   jobType: {
     type: String,
     required: true,
-    enum: ["Full-time", "Part-time", "Contract", "Internship"], // optional: restrict to specific job types
   },
   location: {
+    type: String,
+    required: true,
+  },
+  jobLocation: {
     type: String,
     required: true,
   },
