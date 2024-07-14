@@ -15,8 +15,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "https://opportunext.vercel.app/",
-    credentials: true,
+    origin: "https://opportunext.vercel.app",
   })
 );
 
