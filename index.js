@@ -12,9 +12,22 @@ mongoose
   .catch((err) => console.log(err));
 
 const app = express();
+
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://opportunext.vercel.app/",
+  "https://oppurtunext-backend-1.onrender.com",
+];
+
 app.use(
   cors({
-    origin: "http://localhost:3000/",
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
   })
 );
 
