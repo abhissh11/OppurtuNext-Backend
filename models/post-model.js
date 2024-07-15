@@ -40,6 +40,11 @@ const postSchema = new mongoose.Schema({
     required: false,
     match: [/.+\@.+\..+/, "Please fill a valid email address"], // optional: validate email format
   },
+  slug: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   createdAt: {
     type: Date,
     default: Date.now,
