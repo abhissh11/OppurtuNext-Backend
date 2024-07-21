@@ -77,3 +77,35 @@ export const getPosts = async (req, res, next) => {
     next(error);
   }
 };
+
+//GET posts by filter
+export const getPostsByQuery = async (req, res, next) => {
+  try {
+    const startIndex = parseInt(req.query.startIndex) || 0;
+    const limit = parseInt(req.query.limit) || 9;
+    const sortDirection = req.query.order === "asc" ? 1 : -1;
+    const posts = await Post.find({
+      ...(req.query.jobType && { category: req.query.jobType }),
+      ...(req.query.slug && { slug: req.query.slug }),
+      ...(req.query.jobLocation && { jobLocation: req.query.jobLocation }),
+      ...(req.query.location && { location: req.query.location }),
+      ...(req.query.searchTerm && {
+        $or: [
+          { title: { $regex: req.query.searchTerm, $options: "i" } },
+          { description: { $regex: req.query.searchTerm, $options: "i" } },
+        ],
+      }),
+    })
+      .sort({ updatedAt: sortDirection })
+      .skip(startIndex)
+      .limit(limit);
+
+    const totalPosts = await Post.countDocuments();
+    res.status(200).json({
+      posts,
+      totalPosts,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
